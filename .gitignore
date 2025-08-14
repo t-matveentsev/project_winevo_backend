@@ -1,0 +1,8 @@
+/node_modules
+//.gitignore
+
+.env
+
+.vscode
+.DS_Store
+.idea

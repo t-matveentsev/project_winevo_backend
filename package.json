@@ -1,0 +1,36 @@
+{
+  "name": "project_winevo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src/**/*.js",
+    "start": "node ./src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/t-matveentsev/project_winevo.git"
+  },
+  "keywords": [],
+  "author": "Artem Matvieientsev <tmatveentsev@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/t-matveentsev/project_winevo/issues"
+  },
+  "homepage": "https://github.com/t-matveentsev/project_winevo#readme",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "eslint": "^9.33.0",
+    "globals": "^16.3.0",
+    "nodemon": "^3.1.10",
+    "pino-pretty": "^13.1.1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "pino-http": "^10.5.0"
+  }
+}
