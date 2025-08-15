@@ -1,4 +1,4 @@
-import { getWineById, getWines } from '../services/wine.js';
+import { getWineById, getWines } from '../services/wines.js';
 
 export const getWinesController = async (req, res) => {
   const data = await getWines();
