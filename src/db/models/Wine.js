@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+import { handleSaveError, setUpdateSettings } from './hooks.js';
 
 const wineSchema = new Schema(
   {
@@ -35,9 +36,21 @@ const wineSchema = new Schema(
       ref: 'user',
       required: true,
     },
+    thumb: {
+      type: String,
+      // required: true,
+    },
   },
   { versionKey: false, timestamps: true },
 );
+
+wineSchema.post('save', handleSaveError);
+
+wineSchema.pre('findOneAndUpdate', setUpdateSettings);
+
+wineSchema.post('findOneAndUpdate', handleSaveError);
+
+export const wineSortFields = ['title', 'winery', 'country', 'strain'];
 
 const WineCollection = model('wine', wineSchema);
 

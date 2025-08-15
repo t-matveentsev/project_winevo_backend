@@ -8,6 +8,7 @@ export const getWinesController = async (req, res) => {
     data,
   });
 };
+
 export const getWineByIdController = async (req, res) => {
   const { id } = req.params;
   const data = await getWineById(id);
