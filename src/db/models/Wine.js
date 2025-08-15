@@ -3,11 +3,12 @@ import { handleSaveError, setUpdateSettings } from './hooks.js';
 
 const wineSchema = new Schema(
   {
-    title: {
-      type: String,
+    type: {
+      type: Schema.Types.ObjectId,
+      ref: 'type',
       required: true,
     },
-    winery: {
+    title: {
       type: String,
       required: true,
     },
@@ -19,12 +20,17 @@ const wineSchema = new Schema(
       type: String,
       required: true,
     },
-    strain: {
+    winery: {
       type: String,
       required: true,
     },
+    varietal: {
+      type: Schema.Types.ObjectId,
+      ref: 'varietal',
+      required: true,
+    },
     year: {
-      type: String,
+      type: Number,
       required: true,
     },
     description: {
@@ -38,7 +44,7 @@ const wineSchema = new Schema(
     },
     thumb: {
       type: String,
-      // required: true,
+      required: false,
     },
   },
   { versionKey: false, timestamps: true },

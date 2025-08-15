@@ -23,6 +23,7 @@ const userSchema = new Schema(
       default: false,
       required: true,
     },
+    favorites: [{ type: Schema.Types.ObjectId, ref: 'wine', default: [] }],
   },
   { versionKey: false, timestamps: true },
 );
