@@ -5,7 +5,12 @@ export const getWines = async () => {
   return wines;
 };
 
-export const getWineById = async (wineId) => {
-  const wine = await WineCollection.findById(wineId);
+export const getWineById = async (id) => {
+  const wine = await WineCollection.findOne({ _id: id });
   return wine;
 };
+
+export const addWine = async (payload) => WineCollection.create(payload);
+
+export const deleteWineById = async (_id) =>
+  WineCollection.findOneAndDelete({ _id });
