@@ -22,6 +22,6 @@ winesRouter.post(
   ctrlWrapper(addWineController),
 );
 
-wineCreateSchema.delete('/:id', isValidId, ctrlWrapper(deleteWineController));
+winesRouter.delete('/:id', isValidId, ctrlWrapper(deleteWineController));
 
 export default winesRouter;

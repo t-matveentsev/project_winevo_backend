@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import winesRouter from './routers/wines.js';
+import authRouter from './routers/auth.js';
 
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -15,6 +16,7 @@ export const setupServer = () => {
   app.use(express.json());
   app.use(logger);
 
+  app.use('/auth', authRouter);
   app.use('/wines', winesRouter);
 
   app.use(notFoundHandler);

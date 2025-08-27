@@ -37,14 +37,10 @@ const wineSchema = new Schema(
       type: String,
       required: true,
     },
-    owner: {
-      type: Schema.Types.ObjectId,
-      ref: 'user',
-      required: true,
-    },
     thumb: {
       type: String,
       required: false,
+      default: 'none',
     },
   },
   { versionKey: false, timestamps: true },

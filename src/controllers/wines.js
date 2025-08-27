@@ -28,8 +28,7 @@ export const getWineByIdController = async (req, res) => {
 };
 
 export const addWineController = async (req, res) => {
-  const { _id: owner } = req.user;
-  const data = await addWine({ ...req.body, owner });
+  const data = await addWine(req.body);
 
   res.status(201).json({
     status: 201,
