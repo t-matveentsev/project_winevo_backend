@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 export const wineCreateSchema = Joi.object({
   type: Joi.string().required(),
-  title: Joi.string().min(4).max(30).required(),
+  title: Joi.string().min(4).max(40).required(),
   country: Joi.string().min(4).max(15).required(),
   region: Joi.string().required(),
   winery: Joi.string().required(),

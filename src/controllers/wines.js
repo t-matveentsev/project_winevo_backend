@@ -5,9 +5,14 @@ import {
   getWineById,
   getWines,
 } from '../services/wines.js';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+import { wineSortFields } from '../db/models/Wine.js';
 
 export const getWinesController = async (req, res) => {
-  const data = await getWines();
+  const paginationParams = parsePaginationParams(req.query);
+  const sortParams = parseSortParams(req.query, wineSortFields);
+  const data = await getWines({ ...paginationParams, ...sortParams });
 
   res.json({
     status: 200,
