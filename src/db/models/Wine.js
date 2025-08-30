@@ -24,11 +24,13 @@ const wineSchema = new Schema(
       type: String,
       required: true,
     },
-    varietal: {
-      type: Schema.Types.ObjectId,
-      ref: 'varietal',
-      required: true,
-    },
+    varietal: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'varietal',
+        required: true,
+      },
+    ],
     year: {
       type: Number,
       required: true,

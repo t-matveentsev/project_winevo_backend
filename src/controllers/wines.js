@@ -8,11 +8,14 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { wineSortFields } from '../db/models/Wine.js';
+import { parseWineFilterParams } from '../utils/filters/parseWineFilterParams.js';
 
 export const getWinesController = async (req, res) => {
   const paginationParams = parsePaginationParams(req.query);
   const sortParams = parseSortParams(req.query, wineSortFields);
-  const data = await getWines({ ...paginationParams, ...sortParams });
+  const filters = await parseWineFilterParams(req.query);
+
+  const data = await getWines({ ...paginationParams, ...sortParams, filters });
 
   res.json({
     status: 200,

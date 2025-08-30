@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 
 const typeSchema = new Schema(
   {
-    name: { type: String, required: true, unique: true },
+    type: { type: String, required: true, unique: true },
   },
   { timestamps: false, versionKey: false },
 );
