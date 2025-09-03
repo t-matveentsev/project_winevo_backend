@@ -20,7 +20,6 @@ winesRouter.get('/:id', isValidId, ctrlWrapper(getWineByIdController));
 
 winesRouter.post(
   '/',
-  isValidId,
   upload.single('thumb'),
   validateBody(wineCreateSchema),
   ctrlWrapper(addWineController),

@@ -1,8 +1,9 @@
 import fs from 'node:fs/promises';
 
-import cloudinary from 'cloudinary';
-import { getEnvVar } from './getEnvVar.js';
 import createHttpError from 'http-errors';
+import cloudinary from 'cloudinary';
+
+import { getEnvVar } from './getEnvVar.js';
 
 cloudinary.config({
   cloud_name: getEnvVar('CLOUDINARY_CLOUD_NAME'),
