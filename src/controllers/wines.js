@@ -1,14 +1,15 @@
 import createHttpError from 'http-errors';
 import {
-  addWine,
   deleteWineById,
   getWineById,
   getWines,
+  updateWine,
 } from '../services/wines.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
-import { wineSortFields } from '../db/models/Wine.js';
+import WineCollection, { wineSortFields } from '../db/models/Wine.js';
 import { parseWineFilterParams } from '../utils/filters/parseWineFilterParams.js';
+import { saveFile } from '../utils/saveFile.js';
 
 export const getWinesController = async (req, res) => {
   const paginationParams = parsePaginationParams(req.query);
@@ -36,12 +37,44 @@ export const getWineByIdController = async (req, res) => {
 };
 
 export const addWineController = async (req, res) => {
-  const data = await addWine(req.body);
+  let thumb = null;
+
+  if (req.file) {
+    try {
+      thumb = await saveFile(req.file);
+    } catch (error) {
+      throw createHttpError(500, `Failed to upload file: ${error.message}`);
+    }
+  }
+
+  const wineData = { ...req.body, thumb };
+  const result = await WineCollection.create(wineData);
 
   res.status(201).json({
     status: 201,
     message: 'Successfully add wine',
-    data,
+    data: result,
+  });
+};
+
+export const patchWineController = async (req, res) => {
+  const { id } = req.params;
+  let thumb = null;
+
+  if (req.file) {
+    thumb = await saveFile(req.file);
+  }
+
+  const result = await updateWine(id, { ...req.body, thumb });
+
+  if (!result) {
+    throw createHttpError(404, `Wine with id=${id} not found`);
+  }
+
+  res.json({
+    status: 200,
+    message: 'Successfully update wine',
+    data: result.data,
   });
 };
 

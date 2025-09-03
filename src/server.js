@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import './utils/periodicCronClean.js';
 
 import authRouter from './routers/auth.js';
 import winesRouter from './routers/wines.js';
@@ -21,12 +22,12 @@ export const setupServer = () => {
   app.use(express.json());
   app.use(logger);
 
+  app.use('/upload', express.static(UPLOAD_FILE_DIR));
+
   app.use('/auth', authRouter);
   app.use('/wines', winesRouter);
   app.use('/types', typesRouter);
   app.use('/varietals', varietalRouter);
-
-  app.use('/upload', express.static(UPLOAD_FILE_DIR));
 
   app.use(notFoundHandler);
   app.use(errorHandler);

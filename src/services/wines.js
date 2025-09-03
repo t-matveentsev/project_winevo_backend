@@ -12,6 +12,10 @@ export const getWines = async ({
   const skip = (page - 1) * perPage;
   const wineQuery = WineCollection.find();
 
+  if (filters.title) {
+    wineQuery.where('title').equals(filters.title);
+  }
+
   if (filters.winery) {
     wineQuery.where('winery').equals(filters.winery);
   }
@@ -53,6 +57,21 @@ export const getWineById = async (id) => {
 };
 
 export const addWine = async (payload) => WineCollection.create(payload);
+
+export const updateWine = async (_id, payload, options = {}) => {
+  const { upsert = false } = options;
+  const rawResult = await WineCollection.findByIdAndUpdate(_id, payload, {
+    upsert,
+    includeResultMetadata: true,
+  });
+
+  if (!rawResult || !rawResult.value) return null;
+
+  return {
+    data: rawResult.value,
+    isNew: Boolean(rawResult.lastErrorObject.upserted),
+  };
+};
 
 export const deleteWineById = async (_id) =>
   WineCollection.findOneAndDelete({ _id });

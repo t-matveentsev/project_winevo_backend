@@ -4,6 +4,7 @@ import { VarietalCollection } from '../../db/models/Varietal.js';
 export const parseWineFilterParams = async ({
   type,
   varietal,
+  title,
   country,
   winery,
 }) => {
@@ -15,6 +16,7 @@ export const parseWineFilterParams = async ({
   return {
     type: typeDoc?._id,
     varietal: varietalDoc?._id,
+    title: title || undefined,
     country: country || undefined,
     winery: winery || undefined,
   };

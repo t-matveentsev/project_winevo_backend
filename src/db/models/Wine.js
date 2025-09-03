@@ -54,7 +54,13 @@ wineSchema.pre('findOneAndUpdate', setUpdateSettings);
 
 wineSchema.post('findOneAndUpdate', handleSaveError);
 
-export const wineSortFields = ['winery', 'country', 'varietal', 'type'];
+export const wineSortFields = [
+  'winery',
+  'country',
+  'varietal',
+  'type',
+  'title',
+];
 
 const WineCollection = model('wine', wineSchema);
 
