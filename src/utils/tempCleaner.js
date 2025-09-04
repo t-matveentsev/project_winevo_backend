@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { TEMPORARY_FILE_DIR } from '../constants/index.js';
+import { ONE_DAY_MS, TEMPORARY_FILE_DIR } from '../constants/index.js';
 
 export const cleanTempFolder = async () => {
   try {
@@ -21,3 +21,12 @@ export const cleanTempFolder = async () => {
     console.error(`Something went wrong in process: ${error.message}`);
   }
 };
+
+const startCleaner = async () => {
+  console.log('Start cleaning the folder...');
+  await cleanTempFolder();
+
+  setTimeout(startCleaner, ONE_DAY_MS);
+};
+
+startCleaner();

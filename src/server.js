@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import './utils/periodicCronClean.js';
+import './utils/tempCleaner.js';
 
 import authRouter from './routers/auth.js';
 import winesRouter from './routers/wines.js';
