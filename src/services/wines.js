@@ -56,7 +56,7 @@ export const getWineById = async (id) => {
   return wine;
 };
 
-export const addWine = async (payload) => WineCollection.create(payload);
+export const addWine = async (payload) => await WineCollection.create(payload);
 
 export const updateWine = async (_id, payload, options = {}) => {
   const { upsert = false } = options;

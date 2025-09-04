@@ -1,5 +1,6 @@
 import createHttpError from 'http-errors';
 import {
+  addWine,
   deleteWineById,
   getWineById,
   getWines,
@@ -7,7 +8,7 @@ import {
 } from '../services/wines.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
-import WineCollection, { wineSortFields } from '../db/models/Wine.js';
+import { wineSortFields } from '../db/models/Wine.js';
 import { parseWineFilterParams } from '../utils/filters/parseWineFilterParams.js';
 import { saveFile } from '../utils/saveFile.js';
 
@@ -48,7 +49,7 @@ export const addWineController = async (req, res) => {
   }
 
   const wineData = { ...req.body, thumb };
-  const result = await WineCollection.create(wineData);
+  const result = await addWine(wineData);
 
   res.status(201).json({
     status: 201,
