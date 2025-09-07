@@ -8,7 +8,7 @@ export const authSignupSchema = Joi.object({
 });
 
 export const authSigninSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp),
+  email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).max(30).required(),
 });
 
