@@ -1,11 +1,15 @@
 import { Router } from 'express';
+
 import { validateBody } from '../utils/validateBody.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import { authenticate } from '../middlewares/authenticate.js';
+
 import {
   authSigninSchema,
   authSignupSchema,
   googleOAuthSchema,
 } from '../validation/auth.js';
+
 import {
   signupController,
   verifyController,
@@ -32,9 +36,9 @@ authRouter.post(
   ctrlWrapper(signinController),
 );
 
-authRouter.post('/refresh', ctrlWrapper(refreshController));
+authRouter.post('/refresh', authenticate, ctrlWrapper(refreshController));
 
-authRouter.post('/signout', ctrlWrapper(signoutController));
+authRouter.post('/signout', authenticate, ctrlWrapper(signoutController));
 
 authRouter.post(
   '/get-google-oauth-link',
