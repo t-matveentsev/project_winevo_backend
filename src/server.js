@@ -22,12 +22,12 @@ export const setupServer = () => {
   app.use(express.json());
   app.use(logger);
 
-  app.use('/upload', express.static(UPLOAD_FILE_DIR));
+  app.use('/api/upload', express.static(UPLOAD_FILE_DIR));
 
-  app.use('/auth', authRouter);
-  app.use('/wines', winesRouter);
-  app.use('/types', typesRouter);
-  app.use('/varietals', varietalRouter);
+  app.use('/api/auth', authRouter);
+  app.use('/api/wines', winesRouter);
+  app.use('/api/types', typesRouter);
+  app.use('/api/varietals', varietalRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
