@@ -65,7 +65,7 @@ export const signupUser = async (payload) => {
   const templateSource = await fs.readFile(verifyEmailPath, 'utf-8');
   const template = Handlebars.compile(templateSource);
   const html = template({
-    verifyLink: `${appDomain}/auth/verify?token=${token}`,
+    verifyLink: `${appDomain}/api/auth/verify?token=${token}`,
   });
 
   const verifyEmail = {
@@ -74,7 +74,7 @@ export const signupUser = async (payload) => {
     html,
   };
 
-  await sendEmail(verifyEmail);
+  sendEmail(verifyEmail);
 
   return newUser;
 };
