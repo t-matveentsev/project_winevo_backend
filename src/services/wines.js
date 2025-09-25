@@ -32,15 +32,24 @@ export const getWines = async ({
     wineQuery.where('type').equals(filters.type);
   }
 
-  const [totalItems, items] = await Promise.all([
-    WineCollection.find().merge(wineQuery).countDocuments(),
-
+  const [totalItems, docs] = await Promise.all([
+    WineCollection.countDocuments(wineQuery.getQuery()),
     wineQuery
       .skip(skip)
       .limit(perPage)
-      .sort({ [sortBy]: sortOrder })
-      .exec(),
+      .sort({ [sortBy]: sortOrder === 'desc' ? -1 : 1 })
+      .populate({ path: 'type', select: 'type' })
+      .populate({ path: 'varietal', select: 'varietal' })
+      .lean(),
   ]);
+
+  const items = docs.map((item) => ({
+    ...item,
+    type: item.type.type,
+    varietal: Array.isArray(item.varietal)
+      ? item.varietal.map((v) => v.varietal)
+      : [],
+  }));
 
   const paginationData = calcPaginationData({ page, perPage, totalItems });
 
@@ -52,8 +61,20 @@ export const getWines = async ({
 };
 
 export const getWineById = async (id) => {
-  const wine = await WineCollection.findOne({ _id: id });
-  return wine;
+  const item = await WineCollection.findById(id)
+    .populate({ path: 'type', select: 'type' })
+    .populate({ path: 'varietal', select: 'varietal' })
+    .lean();
+
+  if (!item) return null;
+
+  return {
+    ...item,
+    type: item.type.type,
+    varietal: Array.isArray(item.varietal)
+      ? item.varietal.map((v) => v.varietal)
+      : [],
+  };
 };
 
 export const addWine = async (payload) => await WineCollection.create(payload);
