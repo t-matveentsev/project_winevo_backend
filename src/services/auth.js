@@ -53,7 +53,10 @@ export const signupUser = async (payload) => {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const newUser = UserCollection.create({ ...payload, password: hashPassword });
+  const newUser = await UserCollection.create({
+    ...payload,
+    password: hashPassword,
+  });
 
   const token = jwt.sign({ email }, jwtSecret, {
     expiresIn: '24h',
