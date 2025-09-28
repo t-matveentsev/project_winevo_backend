@@ -121,6 +121,7 @@ export const getCurrentUser = async (payload) => {
 
 export const refreshUser = async ({ refreshToken, sessionId }) => {
   if (!refreshToken || !sessionId) {
+    throw createHttpError(401, 'Missing refresh cookies');
   }
 
   const updatedSession = createSession();
