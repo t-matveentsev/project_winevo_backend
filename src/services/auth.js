@@ -115,24 +115,37 @@ export const signinUser = async (payload) => {
   });
 };
 
+export const getCurrentUser = async (payload) => {
+  return await UserCollection.findById(payload).select('-password');
+};
+
 export const refreshUser = async ({ refreshToken, sessionId }) => {
-  const session = await findSession({ refreshToken, _id: sessionId });
-  if (!session) {
-    throw createHttpError(401, 'Session not found');
-  }
-  if (session.refreshTokenValidUntil < Date.now()) {
-    await SessionCollection.findOneAndDelete({ _id: session._id });
-    throw createHttpError(401, 'Session token expired');
+  if (!refreshToken || !sessionId) {
   }
 
-  await SessionCollection.findOneAndDelete({ _id: session._id });
+  const updatedSession = createSession();
 
-  const newSession = createSession();
+  const rotated = await SessionCollection.findOneAndUpdate(
+    {
+      _id: sessionId,
+      refreshToken,
+    },
+    {
+      $set: {
+        accessToken: updatedSession.accessToken,
+        refreshToken: updatedSession.refreshToken,
+        accessTokenValidUntil: updatedSession.accessTokenValidUntil,
+        refreshTokenValidUntil: updatedSession.refreshTokenValidUntil,
+      },
+    },
+    { new: true },
+  );
 
-  return SessionCollection.create({
-    userId: session.userId,
-    ...newSession,
-  });
+  if (!rotated) {
+    throw createHttpError(401, 'Session not found or expired');
+  }
+
+  return rotated;
 };
 
 export const signoutUser = async (sessionId) => {

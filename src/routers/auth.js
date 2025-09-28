@@ -18,6 +18,7 @@ import {
   signoutController,
   getGoogleOAuthLinkController,
   signupOrSigninGoogleController,
+  currentUserController,
 } from '../controllers/auth.js';
 
 const authRouter = Router();
@@ -36,7 +37,9 @@ authRouter.post(
   ctrlWrapper(signinController),
 );
 
-authRouter.post('/refresh', authenticate, ctrlWrapper(refreshController));
+authRouter.post('/refresh', ctrlWrapper(refreshController));
+
+authRouter.get('/current', authenticate, ctrlWrapper(currentUserController));
 
 authRouter.post('/signout', authenticate, ctrlWrapper(signoutController));
 

@@ -7,17 +7,22 @@ import {
   signoutUser,
   getGoogleLink,
   signupOrSigninWithGoogle,
+  getCurrentUser,
 } from '../services/auth.js';
 
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    expires: session.refreshTokenValidUntil,
+    sameSite: 'lax', //change 'lax' in 'none' for production
+    secure: false, //change false in true
+    expires: new Date(session.refreshTokenValidUntil),
   });
 
   res.cookie('sessionId', session._id, {
     httpOnly: true,
-    expires: session.refreshTokenValidUntil,
+    sameSite: 'lax', //change 'lax' in 'none'
+    secure: false, //change false in true
+    expires: new Date(session.refreshTokenValidUntil),
   });
 };
 
@@ -43,15 +48,25 @@ export const verifyController = async (req, res) => {
 
 export const signinController = async (req, res) => {
   const session = await signinUser(req.body);
-
+  const user = await getCurrentUser(session.userId);
   setupSession(res, session);
 
-  res.json({
+  res.status(200).json({
     status: 200,
     message: 'Signin successfully',
-    data: {
-      accessToken: session.accessToken, //delete later
-    },
+    accessToken: session.accessToken,
+    user,
+  });
+};
+
+export const currentUserController = async (req, res) => {
+  const { _id } = req.user;
+  const user = await getCurrentUser(_id);
+
+  res.status(201).json({
+    status: 201,
+    message: 'Successfully find user',
+    user,
   });
 };
 
@@ -63,9 +78,7 @@ export const refreshController = async (req, res) => {
   res.json({
     status: 200,
     message: 'Session successfully refresh',
-    data: {
-      accessToken: session.accessToken,
-    },
+    accessToken: session.accessToken,
   });
 };
 

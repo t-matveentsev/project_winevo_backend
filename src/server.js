@@ -17,9 +17,17 @@ import { UPLOAD_FILE_DIR } from './constants/index.js';
 export const setupServer = () => {
   const app = express();
 
-  app.use(cors());
   app.use(cookieParser());
   app.use(express.json());
+  app.use(
+    cors({
+      origin: 'http://localhost:5173',
+      // origin: 'prod front site',
+      credentials: true,
+      methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    }),
+  );
   app.use(logger);
 
   app.use('/api/upload', express.static(UPLOAD_FILE_DIR));
