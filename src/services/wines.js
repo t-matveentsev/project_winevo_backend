@@ -1,6 +1,7 @@
 import { sortList } from '../constants/index.js';
 import WineCollection from '../db/models/Wine.js';
 import { calcPaginationData } from '../utils/calcPaginationData.js';
+import { escapeRegex } from '../utils/escapeRegex.js';
 
 export const getWines = async ({
   page = 1,
@@ -12,24 +13,25 @@ export const getWines = async ({
   const skip = (page - 1) * perPage;
   const wineQuery = WineCollection.find();
 
-  if (filters.title) {
-    wineQuery.where('title').equals(filters.title);
-  }
-
-  if (filters.winery) {
-    wineQuery.where('winery').equals(filters.winery);
-  }
-
   if (filters.country) {
     wineQuery.where('country').equals(filters.country);
   }
-
   if (filters.varietal) {
     wineQuery.where('varietal').equals(filters.varietal);
   }
-
   if (filters.type) {
     wineQuery.where('type').equals(filters.type);
+  }
+  if (filters.query) {
+    const rx = new RegExp(escapeRegex(filters.query), 'i');
+    wineQuery.or([{ title: rx }, { winery: rx }]);
+  } else {
+    if (filters.title) {
+      wineQuery.where('title', new RegExp(escapeRegex(filters.title), 'i'));
+    }
+    if (filters.winery) {
+      wineQuery.where('winery', new RegExp(escapeRegex(filters.winery), 'i'));
+    }
   }
 
   const [totalItems, docs] = await Promise.all([
@@ -56,6 +58,8 @@ export const getWines = async ({
   return {
     items,
     totalItems,
+    page,
+    perPage,
     ...paginationData,
   };
 };
