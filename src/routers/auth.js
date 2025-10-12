@@ -19,6 +19,9 @@ import {
   getGoogleOAuthLinkController,
   signupOrSigninGoogleController,
   currentUserController,
+  addFavoritesController,
+  deleteFavoritesController,
+  getFavoritesController,
 } from '../controllers/auth.js';
 
 const authRouter = Router();
@@ -35,6 +38,20 @@ authRouter.post(
   '/signin',
   validateBody(authSigninSchema),
   ctrlWrapper(signinController),
+);
+
+authRouter.get('/favorites', authenticate, ctrlWrapper(getFavoritesController));
+
+authRouter.post(
+  '/favorites/:wineId',
+  authenticate,
+  ctrlWrapper(addFavoritesController),
+);
+
+authRouter.delete(
+  '/favorites/:wineId',
+  authenticate,
+  ctrlWrapper(deleteFavoritesController),
 );
 
 authRouter.post('/refresh', ctrlWrapper(refreshController));

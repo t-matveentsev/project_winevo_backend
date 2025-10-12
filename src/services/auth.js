@@ -20,6 +20,7 @@ import {
   generateGoogleOAuthLink,
   verifyCode,
 } from '../utils/googleOauthClient.js';
+import WineCollection from '../db/models/Wine.js';
 
 const createSession = () => {
   const accessToken = randomBytes(30).toString('base64');
@@ -113,6 +114,57 @@ export const signinUser = async (payload) => {
     userId: user._id,
     ...oldSession,
   });
+};
+
+export const getFavorites = async (_id) => {
+  const user = await UserCollection.findById(_id, 'favorites')
+    .populate({
+      path: 'favorites',
+      populate: [
+        { path: 'type', select: 'type -_id' },
+        { path: 'varietal', select: 'varietal -_id' },
+      ],
+    })
+    .lean();
+
+  const favorites = user.favorites.map((wine) => ({
+    ...wine,
+    type: wine.type.type,
+    varietal: wine.varietal.map((v) => v.varietal),
+  }));
+
+  return favorites;
+};
+
+export const addFavorite = async (userId, wineId) => {
+  const exists = await WineCollection.exists({ _id: wineId });
+  if (!exists) {
+    throw createHttpError(404, 'Wine not found');
+  }
+
+  await UserCollection.findByIdAndUpdate(
+    userId,
+    { $addToSet: { favorites: wineId } },
+    { new: false },
+  );
+
+  const updated = await UserCollection.findById(userId, 'favorites').lean();
+  const favoriteIds = updated?.favorites?.map(String) || [];
+
+  return { favoriteIds, wineId, isFavorite: true };
+};
+
+export const removeFavorite = async (userId, wineId) => {
+  await UserCollection.findByIdAndUpdate(
+    userId,
+    { $pull: { favorites: wineId } },
+    { new: false },
+  );
+
+  const updated = await UserCollection.findById(userId, 'favorites').lean();
+  const favoriteIds = updated?.favorites?.map(String) || [];
+
+  return { favoriteIds, wineId, isFavorite: false };
 };
 
 export const getCurrentUser = async (payload) => {

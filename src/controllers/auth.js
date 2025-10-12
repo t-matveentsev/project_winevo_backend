@@ -8,6 +8,9 @@ import {
   getGoogleLink,
   signupOrSigninWithGoogle,
   getCurrentUser,
+  getFavorites,
+  addFavorite,
+  removeFavorite,
 } from '../services/auth.js';
 
 const setupSession = (res, session) => {
@@ -67,6 +70,43 @@ export const currentUserController = async (req, res) => {
     status: 201,
     message: 'Successfully find user',
     user,
+  });
+};
+
+export const getFavoritesController = async (req, res) => {
+  const { _id } = req.user;
+  const favorites = await getFavorites(_id);
+
+  res.json({
+    status: 200,
+    message: 'Successfully find favorites list',
+    data: favorites,
+  });
+};
+
+export const addFavoritesController = async (req, res) => {
+  const { _id } = req.user;
+  const { wineId } = req.params;
+
+  const data = await addFavorite(_id, wineId);
+
+  res.status(201).json({
+    status: 201,
+    message: 'Successfully added to favorites',
+    data,
+  });
+};
+
+export const deleteFavoritesController = async (req, res) => {
+  const userId = req.user._id;
+  const { wineId } = req.params;
+
+  const data = await removeFavorite(userId, wineId);
+
+  res.json({
+    status: 200,
+    message: 'Successfully deleted from favorites',
+    data,
   });
 };
 
