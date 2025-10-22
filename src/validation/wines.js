@@ -8,7 +8,7 @@ export const wineCreateSchema = Joi.object({
   winery: Joi.string().required(),
   varietal: Joi.array().items(Joi.string()).min(1).required(),
   year: Joi.string().min(4).max(4).required(),
-  description: Joi.string().min(30).max(500),
+  description: Joi.string().min(30).max(1000),
 }).min(1);
 
 export const wineUpdateSchema = Joi.object({
@@ -19,5 +19,5 @@ export const wineUpdateSchema = Joi.object({
   winery: Joi.string(),
   varietal: Joi.array().items(Joi.string()).min(1),
   year: Joi.string().min(4).max(4),
-  description: Joi.string().min(30).max(500),
+  description: Joi.string().min(30).max(1000),
 }).min(1);
