@@ -17,15 +17,15 @@ import { getEnvVar } from '../utils/getEnvVar.js';
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    sameSite: 'lax', //change 'lax' in 'none' for production
-    secure: false, //change false in true
+    sameSite: 'none', //change 'lax' in 'none' for production
+    secure: true, //change false in true
     expires: new Date(session.refreshTokenValidUntil),
   });
 
   res.cookie('sessionId', session._id, {
     httpOnly: true,
-    sameSite: 'lax', //change 'lax' in 'none'
-    secure: false, //change false in true
+    sameSite: 'none', //change 'lax' in 'none'
+    secure: true, //change false in true
     expires: new Date(session.refreshTokenValidUntil),
   });
 };

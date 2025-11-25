@@ -21,7 +21,8 @@ export const setupServer = () => {
   app.use(express.json());
   app.use(
     cors({
-      origin: 'http://localhost:5173',
+      origin: 'https://project-winevo-frontend.vercel.app',
+      // origin: 'http://localhost:5173',
       // origin: 'prod front site',
       credentials: true,
       methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
