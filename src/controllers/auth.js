@@ -12,6 +12,7 @@ import {
   addFavorite,
   removeFavorite,
 } from '../services/auth.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
 
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
@@ -148,12 +149,30 @@ export const getGoogleOAuthLinkController = (req, res) => {
 export const signupOrSigninGoogleController = async (req, res) => {
   const { code } = req.body;
   const session = await signupOrSigninWithGoogle(code);
+  const user = await getCurrentUser(session.userId);
 
   setupSession(res, session);
 
   res.json({
     status: 200,
     message: 'User logged in with google OAuth',
-    data: { accessToken: session.accessToken },
+    data: {
+      accessToken: session.accessToken,
+      user: user,
+    },
   });
+};
+
+export const googleAuthRedirectController = async (req, res, next) => {
+  const { code } = req.query;
+
+  if (!code) {
+    throw createHttpError(400, 'Missing authorization code');
+  }
+
+  const session = await signupOrSigninWithGoogle(code);
+
+  setupSession(res, session);
+
+  res.redirect(`${getEnvVar('FRONTEND_URL')}`);
 };

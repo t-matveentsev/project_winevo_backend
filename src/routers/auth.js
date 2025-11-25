@@ -22,6 +22,7 @@ import {
   addFavoritesController,
   deleteFavoritesController,
   getFavoritesController,
+  googleAuthRedirectController,
 } from '../controllers/auth.js';
 
 const authRouter = Router();
@@ -68,6 +69,10 @@ authRouter.post(
   '/signin-with-google',
   validateBody(googleOAuthSchema),
   ctrlWrapper(signupOrSigninGoogleController),
+);
+authRouter.get(
+  '/signin-with-google',
+  ctrlWrapper(googleAuthRedirectController),
 );
 
 export default authRouter;
