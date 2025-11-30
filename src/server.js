@@ -21,7 +21,7 @@ export const setupServer = () => {
   app.use(express.json());
   app.use(
     cors({
-      origin: 'https://project-winevo-frontend.vercel.app',
+      origin: 'https://winevo-collection.me',
       // origin: 'http://localhost:5173',
       // origin: 'prod front site',
       credentials: true,

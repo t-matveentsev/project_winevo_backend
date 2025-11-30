@@ -47,7 +47,7 @@ export const verifyController = async (req, res) => {
     throw createHttpError(404, 'User not found');
   }
 
-  res.redirect('https://github.com/t-matveentsev');
+  res.redirect('https://winevo-collection.me/signin');
 };
 
 export const signinController = async (req, res) => {
