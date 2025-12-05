@@ -19,7 +19,7 @@ const setupSession = (res, session) => {
     httpOnly: true,
     sameSite: 'lax', //change 'lax' in 'none' for production
     secure: true, //change false in true
-    domain: '.winevo-collection.me',
+    domain: '.winevo.app',
     expires: new Date(session.refreshTokenValidUntil),
   });
 
@@ -27,7 +27,7 @@ const setupSession = (res, session) => {
     httpOnly: true,
     sameSite: 'lax', //change 'lax' in 'none'
     secure: true, //change false in true
-    domain: '.winevo-collection.me',
+    domain: '.winevo.app',
     expires: new Date(session.refreshTokenValidUntil),
   });
   // const cookieOptions = {
