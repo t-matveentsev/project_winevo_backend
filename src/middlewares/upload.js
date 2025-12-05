@@ -1,5 +1,10 @@
 import multer from 'multer';
+import fs from 'fs';
 import { TEMPORARY_FILE_DIR } from '../constants/index.js';
+
+if (!fs.existsSync(TEMPORARY_FILE_DIR)) {
+  fs.mkdirSync(TEMPORARY_FILE_DIR, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
