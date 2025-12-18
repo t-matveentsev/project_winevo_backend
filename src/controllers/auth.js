@@ -34,7 +34,7 @@ const setupSession = (res, session) => {
   //   httpOnly: true,
   //   sameSite: 'lax',
   //   secure: true,
-  //   domain: '.winevo-collection.me',
+  //   domain: '.winevo.app',
   //   expires: new Date(session.refreshTokenValidUntil),
   // };
 
@@ -59,7 +59,7 @@ export const verifyController = async (req, res) => {
     throw createHttpError(404, 'User not found');
   }
 
-  res.redirect('https://winevo-collection.me/signin');
+  res.redirect('https://winevo.app/signin');
 };
 
 export const signinController = async (req, res) => {

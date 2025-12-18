@@ -42,7 +42,8 @@ const wineSchema = new Schema(
     thumb: {
       type: String,
       required: false,
-      default: 'none',
+      default:
+        'https://res.cloudinary.com/dmkj3w0xd/image/upload/v1766022614/puahb3laxdfqi98w9d1n.webp',
     },
   },
   { versionKey: false, timestamps: true },
