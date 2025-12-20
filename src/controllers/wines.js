@@ -60,13 +60,16 @@ export const addWineController = async (req, res) => {
 
 export const patchWineController = async (req, res) => {
   const { id } = req.params;
-  let thumb = null;
+
+  const payload = { ...req.body };
 
   if (req.file) {
-    thumb = await saveFile(req.file);
+    payload.thumb = await saveFile(req.file);
   }
 
-  const result = await updateWine(id, { ...req.body, thumb });
+  //   const result = await updateWine(id, { ...req.body, thumb });
+
+  const result = await updateWine(id, payload);
 
   if (!result) {
     throw createHttpError(404, `Wine with id=${id} not found`);
