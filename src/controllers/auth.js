@@ -17,7 +17,7 @@ import { getEnvVar } from '../utils/getEnvVar.js';
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    sameSite: 'lax', //change 'lax' in 'none' for production
+    sameSite: 'none', //change 'lax' in 'none' for production
     secure: true, //change false in true
     domain: '.winevo.app',
     expires: new Date(session.refreshTokenValidUntil),
@@ -25,7 +25,7 @@ const setupSession = (res, session) => {
 
   res.cookie('sessionId', session._id, {
     httpOnly: true,
-    sameSite: 'lax', //change 'lax' in 'none'
+    sameSite: 'none', //change 'lax' in 'none'
     secure: true, //change false in true
     domain: '.winevo.app',
     expires: new Date(session.refreshTokenValidUntil),
